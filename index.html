@@ -1,0 +1,1824 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kim Sehyoung | Data Scientist</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Pretendard:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #0a0a0a;
+    --off-white: #f5f2ed;
+    --cream: #ede8df;
+    --accent: #c8a97e;
+    --accent-dark: #a07c52;
+    --muted: #7a7065;
+    --card-bg: #ffffff;
+    --border: #e0dbd2;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Pretendard', sans-serif;
+    background-color: var(--off-white);
+    color: var(--black);
+    overflow-x: hidden;
+  }
+
+  /* NOISE TEXTURE OVERLAY */
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1000;
+    opacity: 0.4;
+  }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 80px 60px;
+    position: relative;
+    background: linear-gradient(135deg, #0a0a0a 0%, #1a1612 60%, #2a1f10 100%);
+    overflow: hidden;
+  }
+
+  .hero::after {
+    content: '';
+    position: absolute;
+    top: -40%;
+    right: -20%;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(200,169,126,0.15) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-tag {
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 32px;
+    font-weight: 500;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.1s forwards;
+  }
+
+  .hero-name {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(60px, 10vw, 120px);
+    line-height: 0.9;
+    color: var(--off-white);
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.2s forwards;
+  }
+
+  .hero-name em {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  .hero-subtitle {
+    font-size: clamp(14px, 2vw, 18px);
+    color: rgba(245,242,237,0.55);
+    margin-top: 32px;
+    max-width: 500px;
+    line-height: 1.7;
+    font-weight: 300;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.35s forwards;
+  }
+
+  .hero-stats {
+    display: flex;
+    gap: 48px;
+    margin-top: 64px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.5s forwards;
+  }
+
+  .stat {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .stat-num {
+    font-family: 'DM Serif Display', serif;
+    font-size: 42px;
+    color: var(--accent);
+    line-height: 1;
+  }
+
+  .stat-label {
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    color: rgba(245,242,237,0.45);
+    text-transform: uppercase;
+    font-weight: 400;
+  }
+
+  /* CTA BUTTONS */
+  .hero-cta {
+    display: flex;
+    gap: 16px;
+    margin-top: 56px;
+    flex-wrap: wrap;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.65s forwards;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 32px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-decoration: none;
+    cursor: pointer;
+    border: none;
+    transition: all 0.3s ease;
+    font-family: 'Pretendard', sans-serif;
+    text-transform: uppercase;
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: var(--black);
+  }
+
+  .btn-primary:hover {
+    background: var(--off-white);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 40px rgba(200,169,126,0.3);
+  }
+
+  .btn-secondary {
+    background: transparent;
+    color: var(--off-white);
+    border: 1px solid rgba(245,242,237,0.25);
+  }
+
+  .btn-secondary:hover {
+    background: rgba(245,242,237,0.08);
+    border-color: var(--accent);
+    color: var(--accent);
+    transform: translateY(-2px);
+  }
+
+  .btn svg {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+  }
+
+  /* SECTION */
+  section {
+    padding: 100px 60px;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 64px;
+  }
+
+  .section-num {
+    font-family: 'DM Serif Display', serif;
+    font-size: 13px;
+    color: var(--accent);
+    font-style: italic;
+  }
+
+  .section-line {
+    width: 48px;
+    height: 1px;
+    background: var(--accent);
+  }
+
+  .section-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(28px, 4vw, 42px);
+    font-weight: 400;
+    letter-spacing: -0.02em;
+  }
+
+  /* CAREER SECTION */
+  .career-section {
+    background: var(--cream);
+  }
+
+  .timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .company-block {
+    border-top: 1px solid var(--border);
+    padding: 40px 0;
+  }
+
+  .company-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 28px;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .company-name {
+    font-family: 'DM Serif Display', serif;
+    font-size: 22px;
+    font-weight: 400;
+  }
+
+  .company-meta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 4px;
+  }
+
+  .company-role {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent-dark);
+  }
+
+  .company-period {
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+  }
+
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+  }
+
+  .project-card {
+    background: var(--card-bg);
+    padding: 24px;
+    border: 1px solid var(--border);
+    transition: all 0.3s ease;
+    cursor: default;
+  }
+
+  .project-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+  }
+
+  .project-tag {
+    display: inline-block;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent-dark);
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+
+  .project-title {
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.5;
+    margin-bottom: 8px;
+  }
+
+  .project-desc {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  /* SKILLS */
+  .skills-section {
+    background: var(--black);
+    color: var(--off-white);
+  }
+
+  .skills-section .section-title {
+    color: var(--off-white);
+  }
+
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1px;
+    background: rgba(245,242,237,0.1);
+    border: 1px solid rgba(245,242,237,0.1);
+  }
+
+  .skill-category {
+    background: var(--black);
+    padding: 32px;
+    transition: background 0.3s ease;
+  }
+
+  .skill-category:hover {
+    background: #111;
+  }
+
+  .skill-cat-title {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 600;
+    margin-bottom: 16px;
+  }
+
+  .skill-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .skill-list li {
+    font-size: 13px;
+    color: rgba(245,242,237,0.7);
+    font-weight: 300;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .skill-list li::before {
+    content: '—';
+    color: var(--accent);
+    font-size: 10px;
+  }
+
+  /* CERTIFICATIONS */
+  .certs-section {
+    background: var(--off-white);
+  }
+
+  .certs-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 12px;
+  }
+
+  .cert-item {
+    background: var(--card-bg);
+    padding: 20px 24px;
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    transition: all 0.25s ease;
+  }
+
+  .cert-item:hover {
+    border-color: var(--accent);
+    transform: translateX(4px);
+  }
+
+  .cert-icon {
+    width: 36px;
+    height: 36px;
+    background: var(--cream);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+
+  .cert-name {
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.3;
+  }
+
+  .cert-org {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+
+  .cert-date {
+    font-size: 11px;
+    color: var(--accent-dark);
+    font-weight: 500;
+    margin-top: 2px;
+  }
+
+  /* AWARDS */
+  .awards-section {
+    background: var(--cream);
+  }
+
+  .awards-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 12px;
+  }
+
+  .award-item {
+    padding: 20px 24px;
+    border-left: 3px solid var(--accent);
+    background: var(--card-bg);
+    transition: all 0.25s ease;
+  }
+
+  .award-item:hover {
+    transform: translateX(4px);
+    box-shadow: 4px 0 20px rgba(200,169,126,0.15);
+  }
+
+  .award-badge {
+    display: inline-block;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: var(--accent-dark);
+    margin-bottom: 6px;
+  }
+
+  .award-title {
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.4;
+    margin-bottom: 4px;
+  }
+
+  .award-org {
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  /* PAPERS */
+  .papers-section {
+    background: var(--off-white);
+  }
+
+  .papers-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .paper-item {
+    border-top: 1px solid var(--border);
+    padding: 28px 0;
+    display: grid;
+    grid-template-columns: 60px 1fr auto;
+    gap: 24px;
+    align-items: start;
+    transition: all 0.2s ease;
+  }
+
+  .paper-item:hover {
+    padding-left: 16px;
+  }
+
+  .paper-num {
+    font-family: 'DM Serif Display', serif;
+    font-size: 28px;
+    color: var(--accent);
+    font-style: italic;
+    line-height: 1;
+    padding-top: 4px;
+  }
+
+  .paper-content {}
+
+  .paper-title {
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.5;
+    margin-bottom: 6px;
+  }
+
+  .paper-meta {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  .paper-badge {
+    display: inline-block;
+    padding: 4px 10px;
+    background: var(--accent);
+    color: var(--black);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .paper-badge.review {
+    background: transparent;
+    border: 1px solid var(--accent);
+    color: var(--accent-dark);
+  }
+
+  /* PATENTS */
+  .patents-section {
+    background: var(--cream);
+  }
+
+  .patents-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 16px;
+  }
+
+  .patent-card {
+    padding: 28px;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .patent-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--accent);
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+    transform-origin: left;
+  }
+
+  .patent-card:hover::before { transform: scaleX(1); }
+
+  .patent-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.1);
+  }
+
+  .patent-status {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    margin-bottom: 14px;
+  }
+
+  .patent-status.registered {
+    background: rgba(200,169,126,0.15);
+    color: var(--accent-dark);
+  }
+
+  .patent-status.applied {
+    background: rgba(122,112,101,0.1);
+    color: var(--muted);
+  }
+
+  .patent-title {
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.6;
+    margin-bottom: 10px;
+  }
+
+  .patent-tech {
+    font-size: 11px;
+    color: var(--accent-dark);
+    font-weight: 500;
+  }
+
+  /* FOOTER */
+  footer {
+    background: var(--black);
+    color: var(--off-white);
+    padding: 60px;
+    text-align: center;
+  }
+
+  .footer-name {
+    font-family: 'DM Serif Display', serif;
+    font-size: 32px;
+    margin-bottom: 8px;
+  }
+
+  .footer-role {
+    font-size: 12px;
+    letter-spacing: 0.2em;
+    color: var(--accent);
+    text-transform: uppercase;
+    font-weight: 500;
+    margin-bottom: 32px;
+  }
+
+  .footer-copy {
+    font-size: 11px;
+    color: rgba(245,242,237,0.3);
+  }
+
+  /* MODAL */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(10,10,10,0.85);
+    z-index: 9000;
+    backdrop-filter: blur(4px);
+    animation: fadeIn 0.2s ease;
+  }
+
+  .modal-overlay.active { display: flex; align-items: center; justify-content: center; padding: 32px; }
+
+  .modal-window {
+    background: var(--off-white);
+    max-width: 900px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+    animation: slideUp 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    scrollbar-width: thin;
+    scrollbar-color: var(--accent) transparent;
+  }
+
+  .modal-close {
+    position: sticky;
+    top: 0;
+    background: var(--black);
+    color: var(--off-white);
+    padding: 12px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 10;
+  }
+
+  .modal-close-label {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+
+  .modal-close-btn {
+    background: none;
+    border: none;
+    color: var(--off-white);
+    cursor: pointer;
+    font-size: 22px;
+    line-height: 1;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+    padding: 0;
+  }
+
+  .modal-close-btn:hover { opacity: 1; }
+
+  .modal-content {
+    padding: 48px;
+  }
+
+  /* PORTFOLIO MODAL */
+  .portfolio-hero {
+    background: linear-gradient(135deg, #0a0a0a 0%, #1a1612 100%);
+    color: var(--off-white);
+    padding: 48px;
+    margin: -48px -48px 40px;
+    position: relative;
+  }
+
+  .portfolio-hero-tag {
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    color: var(--accent);
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-bottom: 16px;
+  }
+
+  .portfolio-hero-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(32px, 5vw, 56px);
+    line-height: 1.0;
+    margin-bottom: 16px;
+  }
+
+  .portfolio-hero-subtitle {
+    font-size: 14px;
+    color: rgba(245,242,237,0.5);
+    font-weight: 300;
+  }
+
+  .portfolio-section {
+    margin-bottom: 48px;
+  }
+
+  .portfolio-section-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 22px;
+    font-weight: 400;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .portfolio-section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .competency-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+  }
+
+  .competency-card {
+    background: var(--cream);
+    padding: 24px;
+    border: 1px solid var(--border);
+  }
+
+  .competency-num {
+    font-family: 'DM Serif Display', serif;
+    font-size: 32px;
+    color: var(--accent);
+    font-style: italic;
+    line-height: 1;
+    margin-bottom: 12px;
+  }
+
+  .competency-title {
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  .competency-desc {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  .work-item {
+    border-top: 1px solid var(--border);
+    padding: 24px 0;
+  }
+
+  .work-item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .work-item-num {
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    color: var(--accent);
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+
+  .work-item-title {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+
+  .work-item-sub {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  .work-outcome {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--accent-dark);
+    margin-top: 10px;
+    padding: 4px 10px;
+    background: rgba(200,169,126,0.12);
+  }
+
+  /* RESUME MODAL */
+  .resume-section {
+    margin-bottom: 40px;
+  }
+
+  .resume-section-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 20px;
+    font-weight: 400;
+    padding-bottom: 12px;
+    border-bottom: 2px solid var(--black);
+    margin-bottom: 20px;
+  }
+
+  .resume-job {
+    margin-bottom: 32px;
+  }
+
+  .resume-job-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 4px;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .resume-job-company {
+    font-size: 16px;
+    font-weight: 700;
+  }
+
+  .resume-job-period {
+    font-size: 12px;
+    color: var(--accent-dark);
+    font-weight: 600;
+  }
+
+  .resume-job-role {
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 14px;
+  }
+
+  .resume-project {
+    margin-bottom: 16px;
+    padding: 16px;
+    background: var(--cream);
+    border-left: 3px solid var(--accent);
+  }
+
+  .resume-project-title {
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: var(--black);
+  }
+
+  .resume-bullets {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .resume-bullets li {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.6;
+    padding-left: 16px;
+    position: relative;
+  }
+
+  .resume-bullets li::before {
+    content: '·';
+    position: absolute;
+    left: 4px;
+    color: var(--accent);
+    font-size: 16px;
+    line-height: 1.3;
+  }
+
+  .cert-grid-modal {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 10px;
+  }
+
+  .cert-row {
+    background: var(--cream);
+    padding: 12px 16px;
+    border: 1px solid var(--border);
+  }
+
+  .cert-row-name {
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 2px;
+  }
+
+  .cert-row-meta {
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(40px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* INTERSECTION OBSERVER FADE */
+  .reveal {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  @media (max-width: 768px) {
+    .hero, section, footer { padding: 60px 24px; }
+    .hero-stats { gap: 28px; flex-wrap: wrap; }
+    .paper-item { grid-template-columns: 40px 1fr; }
+    .paper-badge { grid-column: 1 / -1; }
+    .modal-content { padding: 24px; }
+    .portfolio-hero { padding: 32px; margin: -24px -24px 28px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-tag">Data Scientist · Portfolio</div>
+  <h1 class="hero-name">Kim<br><em>Se·hyoung</em></h1>
+  <p class="hero-subtitle">문제를 구조화하고, 데이터로 증명하며, 기술로 실현하는 Data Scientist.</p>
+  <div class="hero-stats">
+    <div class="stat">
+      <span class="stat-num">11+</span>
+      <span class="stat-label">논문 게재</span>
+    </div>
+    <div class="stat">
+      <span class="stat-num">7+</span>
+      <span class="stat-label">특허 보유</span>
+    </div>
+    <div class="stat">
+      <span class="stat-num">9+</span>
+      <span class="stat-label">자격증</span>
+    </div>
+    <div class="stat">
+      <span class="stat-num">10+</span>
+      <span class="stat-label">수상 경력</span>
+    </div>
+  </div>
+  <div class="hero-cta">
+    <button class="btn btn-primary" onclick="openModal('portfolio-modal')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+      포트폴리오 보기
+    </button>
+    <button class="btn btn-secondary" onclick="openModal('resume-modal')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+      이력서 보기
+    </button>
+  </div>
+</section>
+
+<!-- CAREER SECTION -->
+<section class="career-section">
+  <div class="section-header reveal">
+    <span class="section-num">01</span>
+    <span class="section-line"></span>
+    <h2 class="section-title">경력</h2>
+  </div>
+
+  <div class="timeline">
+    <div class="company-block reveal">
+      <div class="company-header">
+        <div>
+          <div class="company-name">CJ제일제당</div>
+          <div style="font-size:12px;color:var(--muted);margin-top:4px;">CJ CheilJedang · BIO기술마케팅팀</div>
+        </div>
+        <div class="company-meta">
+          <span class="company-role">Data Scientist</span>
+          <span class="company-period">2025.07 ~ 재직 중</span>
+        </div>
+      </div>
+      <div class="projects-grid">
+        <div class="project-card">
+          <span class="project-tag">최적화 · LP</span>
+          <div class="project-title">수리적 최적화(LP) 기반 아미노산 배합비 최적화 모델 개발</div>
+          <div class="project-desc">선형계획법 기반 비용 최소화 모델로 원가 절감 시나리오 도출</div>
+        </div>
+        <div class="project-card">
+          <span class="project-tag">통계 분석</span>
+          <div class="project-title">통계적 실험 설계(DOE) 및 사양 데이터 검증 프로세스 구축</div>
+          <div class="project-desc">T-test, ANOVA 기반 동물 사양 실험 데이터 신뢰도 확보</div>
+        </div>
+        <div class="project-card">
+          <span class="project-tag">시계열 예측</span>
+          <div class="project-title">원료 판가 예측 시스템 개발</div>
+          <div class="project-desc">XGBoost, LightGBM, Prophet/LSTM 앙상블 모델 기반 가격 예측</div>
+        </div>
+        <div class="project-card">
+          <span class="project-tag">AI · RAG</span>
+          <div class="project-title">Tech DB 기반 AI 지식 관리 파이프라인 구축</div>
+          <div class="project-desc">RAG 기반 사내 R&D 기술 자료 검색 및 AI 어시스턴트 설계</div>
+        </div>
+        <div class="project-card">
+          <span class="project-tag">기획</span>
+          <div class="project-title">글로벌 B2B 고객 대상 데이터 플랫폼 기획</div>
+          <div class="project-desc">원료 성분 분석 플랫폼 기능 정의 및 UI/UX 기획</div>
+        </div>
+        <div class="project-card">
+          <span class="project-tag">클라우드 · AWS</span>
+          <div class="project-title">내부 서비스의 AWS 서버 이관 기획</div>
+          <div class="project-desc">글로벌 외부 고객 확장을 위한 인프라 재설계 참여</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="company-block reveal">
+      <div class="company-header">
+        <div>
+          <div class="company-name">현대엔지비</div>
+          <div style="font-size:12px;color:var(--muted);margin-top:4px;">Hyundai NGV · 기술기획팀</div>
+        </div>
+        <div class="company-meta">
+          <span class="company-role">Data Scientist</span>
+          <span class="company-period">2024.03 ~ 2025.05</span>
+        </div>
+      </div>
+      <div class="projects-grid">
+        <div class="project-card">
+          <span class="project-tag">AI · LLM</span>
+          <div class="project-title">생성형 AI(sLLM) 기반 사내 R&D 지원 서비스 개발</div>
+          <div class="project-desc">LangChain + On-premise sLLM 기반 질의응답 에이전트 개발</div>
+        </div>
+        <div class="project-card">
+          <span class="project-tag">텍스트 마이닝</span>
+          <div class="project-title">텍스트 마이닝 기반 미래 기술 로드맵(TRM) 수립</div>
+          <div class="project-desc">수만 건 특허/논문 분석으로 공백·부상 기술 도출</div>
+        </div>
+        <div class="project-card">
+          <span class="project-tag">Tableau</span>
+          <div class="project-title">R&D 기술 트렌드 시각화 대시보드 구축</div>
+          <div class="project-desc">전사 Tableau 대시보드 개발 및 MBO Outstanding 달성</div>
+        </div>
+        <div class="project-card">
+          <span class="project-tag">Cloud Native</span>
+          <div class="project-title">자동차 산업 Cloud Native 적용 방안 연구</div>
+          <div class="project-desc">SOAFEE 참가 및 Kubernetes 자격증 취득 후 전략 수립</div>
+        </div>
+        <div class="project-card">
+          <span class="project-tag">자동화</span>
+          <div class="project-title">중국·일본 동향 자동화 프로그램 개발</div>
+          <div class="project-desc">sLLM + OCR + 크롤러 기반 리포트 자동화 → 30% 생산성 향상</div>
+        </div>
+        <div class="project-card">
+          <span class="project-tag">특허 분석</span>
+          <div class="project-title">승객안전(에어백) TRM 컨설팅</div>
+          <div class="project-desc">PatentSBERT 클러스터링 + 시계열 분석으로 유망 기술 도출, NPS 상위</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="company-block reveal">
+      <div class="company-header">
+        <div>
+          <div class="company-name">SK가스</div>
+          <div style="font-size:12px;color:var(--muted);margin-top:4px;">SK Gas · 마케팅전략팀</div>
+        </div>
+        <div class="company-meta">
+          <span class="company-role">Data Analyst (Intern)</span>
+          <span class="company-period">2023.10 ~ 2023.11</span>
+        </div>
+      </div>
+      <div class="projects-grid">
+        <div class="project-card">
+          <span class="project-tag">고객 분석</span>
+          <div class="project-title">LPG 고객 세분화 및 마케팅 전략 수립</div>
+          <div class="project-desc">RFM 분석 및 K-Means Clustering으로 타겟 맞춤형 프로모션 전략 제안</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS SECTION -->
+<section class="skills-section">
+  <div class="section-header reveal">
+    <span class="section-num" style="color:var(--accent)">02</span>
+    <span class="section-line"></span>
+    <h2 class="section-title">기술 스택</h2>
+  </div>
+  <div class="skills-grid reveal">
+    <div class="skill-category">
+      <div class="skill-cat-title">AI / ML</div>
+      <ul class="skill-list">
+        <li>LLM / RAG / LangChain</li>
+        <li>XGBoost / LightGBM</li>
+        <li>BERT / Sentence-BERT</li>
+        <li>Prophet / LSTM</li>
+        <li>BERTopic / KeyBERT</li>
+      </ul>
+    </div>
+    <div class="skill-category">
+      <div class="skill-cat-title">데이터 분석</div>
+      <ul class="skill-list">
+        <li>Python (Pandas, NumPy)</li>
+        <li>R / SPSS</li>
+        <li>SQL / SQLD</li>
+        <li>Text Mining / NLP</li>
+        <li>Network Analysis (SNA)</li>
+      </ul>
+    </div>
+    <div class="skill-category">
+      <div class="skill-cat-title">시각화 · BI</div>
+      <ul class="skill-list">
+        <li>Tableau (Desktop Professional)</li>
+        <li>Power BI</li>
+        <li>Streamlit</li>
+        <li>Python (Plotly, Matplotlib)</li>
+      </ul>
+    </div>
+    <div class="skill-category">
+      <div class="skill-cat-title">클라우드 · 인프라</div>
+      <ul class="skill-list">
+        <li>AWS (Cloud / AI / ML)</li>
+        <li>Azure Fundamentals</li>
+        <li>Kubernetes / Cloud Native</li>
+        <li>Docker / On-premise LLM</li>
+      </ul>
+    </div>
+    <div class="skill-category">
+      <div class="skill-cat-title">최적화 · 수학</div>
+      <ul class="skill-list">
+        <li>Linear Programming (Gurobi)</li>
+        <li>T-test / ANOVA / DOE</li>
+        <li>Time Series Analysis</li>
+        <li>Ensemble Methods</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- CERTIFICATIONS -->
+<section class="certs-section">
+  <div class="section-header reveal">
+    <span class="section-num">03</span>
+    <span class="section-line"></span>
+    <h2 class="section-title">자격증</h2>
+  </div>
+  <div class="certs-grid reveal">
+    <div class="cert-item">
+      <div class="cert-icon">🏆</div>
+      <div>
+        <div class="cert-name">빅데이터분석기사</div>
+        <div class="cert-org">한국데이터산업진흥원</div>
+        <div class="cert-date">2023.12</div>
+      </div>
+    </div>
+    <div class="cert-item">
+      <div class="cert-icon">☁️</div>
+      <div>
+        <div class="cert-name">AWS Certified Cloud Practitioner</div>
+        <div class="cert-org">Amazon Web Services</div>
+        <div class="cert-date">2023.07</div>
+      </div>
+    </div>
+    <div class="cert-item">
+      <div class="cert-icon">🤖</div>
+      <div>
+        <div class="cert-name">AWS Certified AI Practitioner</div>
+        <div class="cert-org">Amazon Web Services</div>
+        <div class="cert-date">2025.01</div>
+      </div>
+    </div>
+    <div class="cert-item">
+      <div class="cert-icon">🧠</div>
+      <div>
+        <div class="cert-name">AWS Certified ML Engineer: Associate</div>
+        <div class="cert-org">Amazon Web Services</div>
+        <div class="cert-date">2025.02</div>
+      </div>
+    </div>
+    <div class="cert-item">
+      <div class="cert-icon">☸️</div>
+      <div>
+        <div class="cert-name">Kubernetes and Cloud Native Associate</div>
+        <div class="cert-org">Linux Foundation</div>
+        <div class="cert-date">2025.01</div>
+      </div>
+    </div>
+    <div class="cert-item">
+      <div class="cert-icon">📊</div>
+      <div>
+        <div class="cert-name">Tableau Desktop Specialist</div>
+        <div class="cert-org">Tableau</div>
+        <div class="cert-date">2024.02</div>
+      </div>
+    </div>
+    <div class="cert-item">
+      <div class="cert-icon">🔷</div>
+      <div>
+        <div class="cert-name">Microsoft Azure Fundamentals</div>
+        <div class="cert-org">Microsoft</div>
+        <div class="cert-date">2025.01</div>
+      </div>
+    </div>
+    <div class="cert-item">
+      <div class="cert-icon">🗄️</div>
+      <div>
+        <div class="cert-name">SQLD</div>
+        <div class="cert-org">한국데이터산업진흥원</div>
+        <div class="cert-date">2022.09</div>
+      </div>
+    </div>
+    <div class="cert-item">
+      <div class="cert-icon">📈</div>
+      <div>
+        <div class="cert-name">ADsP</div>
+        <div class="cert-org">한국데이터산업진흥원</div>
+        <div class="cert-date">2019.12</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PAPERS -->
+<section class="papers-section">
+  <div class="section-header reveal">
+    <span class="section-num">04</span>
+    <span class="section-line"></span>
+    <h2 class="section-title">논문</h2>
+  </div>
+  <div class="papers-list reveal">
+    <div class="paper-item">
+      <div class="paper-num">01</div>
+      <div class="paper-content">
+        <div class="paper-title">An Expert Behavior-enhanced Paper Ranking Framework for the Automotive Industry</div>
+        <div class="paper-meta">EMNLP 2024 · 자동차 산업 특화 논문 랭킹 모델 (V-BERT-Specter + fastText + Expert Behavior Modeling)</div>
+      </div>
+      <span class="paper-badge">게재</span>
+    </div>
+    <div class="paper-item">
+      <div class="paper-num">02</div>
+      <div class="paper-content">
+        <div class="paper-title">A framework for detecting legal blind spots for socially vulnerable populations</div>
+        <div class="paper-meta">Government Information Quarterly (Under Review) · SBERT 임베딩 기반 법률 사각지대 탐지</div>
+      </div>
+      <span class="paper-badge review">심사중</span>
+    </div>
+    <div class="paper-item">
+      <div class="paper-num">03</div>
+      <div class="paper-content">
+        <div class="paper-title">위성영상 데이터셋 활용성 증대를 위한 다차원 분류체계(Taxonomy) 구축</div>
+        <div class="paper-meta">ICIC Express Letters (게재 예정) · Taxonomy Development Framework 적용</div>
+      </div>
+      <span class="paper-badge review">게재 예정</span>
+    </div>
+    <div class="paper-item">
+      <div class="paper-num">04</div>
+      <div class="paper-content">
+        <div class="paper-title">Materiality-Based Online Complaint Classification</div>
+        <div class="paper-meta">ICIC Express Letters (게재 예정) · 민원 중대성 지표 개발 및 자동화 프레임워크</div>
+      </div>
+      <span class="paper-badge review">게재 예정</span>
+    </div>
+    <div class="paper-item">
+      <div class="paper-num">05</div>
+      <div class="paper-content">
+        <div class="paper-title">기술융합패턴 분석 기반 미래 유망 기술 선정에 관한 연구: 자율주행 특허데이터를 중심으로</div>
+        <div class="paper-meta">석사학위논문 · CPC 네트워크 분석 + 구조적 공백 이론 + XAI 기반 기술 예측</div>
+      </div>
+      <span class="paper-badge">게재</span>
+    </div>
+    <div class="paper-item">
+      <div class="paper-num">06</div>
+      <div class="paper-content">
+        <div class="paper-title">프롬프트 엔지니어링과 BERTopic을 활용한 고령자 교통사고 인식 분석</div>
+        <div class="paper-meta">전자거래학회지 2023.11 · 유튜브 댓글 기반 BERTopic + LLM Prompt Engineering</div>
+      </div>
+      <span class="paper-badge">게재</span>
+    </div>
+    <div class="paper-item">
+      <div class="paper-num">07</div>
+      <div class="paper-content">
+        <div class="paper-title">텍스트 마이닝 기반 미래신호 탐지 및 위성산업 진입 전략 수립</div>
+        <div class="paper-meta">지능정보연구 2023.09 · 미래신호 탐지 방법론 적용</div>
+      </div>
+      <span class="paper-badge">게재</span>
+    </div>
+    <div class="paper-item">
+      <div class="paper-num">08</div>
+      <div class="paper-content">
+        <div class="paper-title">고령화 단계별 판례 분석을 통한 법적 분쟁 유형 및 패턴 도출</div>
+        <div class="paper-meta">전자거래학회지 2023.01 · SNA + BERTopic 결합 분석</div>
+      </div>
+      <span class="paper-badge">게재</span>
+    </div>
+    <div class="paper-item">
+      <div class="paper-num">09</div>
+      <div class="paper-content">
+        <div class="paper-title">유사 충성도(Pseudo-Loyalty) 기반 인플루언서 팬덤 세분화 분석</div>
+        <div class="paper-meta">서비스경영학회지 2022.12 · 감성 점수 + Clustering 기반 팬덤 분류</div>
+      </div>
+      <span class="paper-badge">게재</span>
+    </div>
+    <div class="paper-item">
+      <div class="paper-num">10</div>
+      <div class="paper-content">
+        <div class="paper-title">PEST-SWOT과 토픽 모델링을 결합한 모바일 간편 결제 활성화 전략</div>
+        <div class="paper-meta">지능정보연구 2022.12 · LDA + PEST-SWOT 프레임워크 매핑</div>
+      </div>
+      <span class="paper-badge">게재</span>
+    </div>
+    <div class="paper-item">
+      <div class="paper-num">11</div>
+      <div class="paper-content">
+        <div class="paper-title">텍스트 마이닝 기반 고령자 관련 법제도 분쟁 유형 도출</div>
+        <div class="paper-meta">전자거래학회지 2022.08 · 🏅 우수논문상 수상 · LDA + 법률 전문가 델파이 검증</div>
+      </div>
+      <span class="paper-badge">우수논문상</span>
+    </div>
+  </div>
+</section>
+
+<!-- AWARDS -->
+<section class="awards-section">
+  <div class="section-header reveal">
+    <span class="section-num">05</span>
+    <span class="section-line"></span>
+    <h2 class="section-title">수상</h2>
+  </div>
+  <div class="awards-list reveal">
+    <div class="award-item">
+      <div class="award-badge">2위 · 신한AI</div>
+      <div class="award-title">신한AI 보다 나은 금융 생활을 위한 AI 서비스 아이디어 경진대회</div>
+      <div class="award-org">LLM 기반 금융 분석 챗봇 개발 · 2023.06</div>
+    </div>
+    <div class="award-item">
+      <div class="award-badge">우수상 · 경동도시가스</div>
+      <div class="award-title">2022 유통 소비 도시가스 빅데이터 분석 해커톤</div>
+      <div class="award-org">고객 세분화 및 타겟 예측 모델링 · 2022.12</div>
+    </div>
+    <div class="award-item">
+      <div class="award-badge">한국광해광업공단상</div>
+      <div class="award-title">산업통상자원부 공공데이터 BI 공모전</div>
+      <div class="award-org">미신고 굴착공사 탐지 ML 모델 · 2023.08</div>
+    </div>
+    <div class="award-item">
+      <div class="award-badge">최우수상 · SR</div>
+      <div class="award-title">SR 서비스 혁신 경진대회</div>
+      <div class="award-org">철도 서비스 Gamification 전략 · 2022.11</div>
+    </div>
+    <div class="award-item">
+      <div class="award-badge">우수상 · 한국도로공사</div>
+      <div class="award-title">한국도로공사 논문 공모전</div>
+      <div class="award-org">모빌리티 R&D 전략 수립 · 2023.07</div>
+    </div>
+    <div class="award-item">
+      <div class="award-badge">우수상 · 현대해상</div>
+      <div class="award-title">현대해상 아이디어 경진대회</div>
+      <div class="award-org">텍스트 분석 기반 MZ세대 마케팅 전략 · 2022.05</div>
+    </div>
+    <div class="award-item">
+      <div class="award-badge">🏅 우수논문상 ×3</div>
+      <div class="award-title">한국전자거래학회 우수논문상 (3회 수상)</div>
+      <div class="award-org">위성기술 미래신호 탐지 / 법률 판례 / 고령자 분쟁 유형 · 2022~2023</div>
+    </div>
+    <div class="award-item">
+      <div class="award-badge">우수발표논문상</div>
+      <div class="award-title">한국스마트미디어학회 우수발표논문상</div>
+      <div class="award-org">위성영상 이미지 활용 연구 동향 및 데이터셋 리뷰 · 2022.02</div>
+    </div>
+  </div>
+</section>
+
+<!-- PATENTS -->
+<section class="patents-section">
+  <div class="section-header reveal">
+    <span class="section-num">06</span>
+    <span class="section-line"></span>
+    <h2 class="section-title">특허</h2>
+  </div>
+  <div class="patents-grid reveal">
+    <div class="patent-card">
+      <span class="patent-status registered">등록</span>
+      <div class="patent-title">사용자 활동 데이터 및 토지 피복 기반 맞춤형 운동 경로 추천 시스템</div>
+      <div class="patent-tech">Geospatial Analysis · Personalization Algorithm · 2023.01</div>
+    </div>
+    <div class="patent-card">
+      <span class="patent-status registered">등록</span>
+      <div class="patent-title">기업 ESG 경영 지원을 위한 탄소 배출 모니터링 및 관리 서버</div>
+      <div class="patent-tech">Remote Sensing · ESG Data Modeling · 2022.12</div>
+    </div>
+    <div class="patent-card">
+      <span class="patent-status registered">등록</span>
+      <div class="patent-title">위성영상 이미지 유사도 기반 드론 촬영지 추천 서비스</div>
+      <div class="patent-tech">Image Similarity Matching · Content-based Recommendation · 2022.09</div>
+    </div>
+    <div class="patent-card">
+      <span class="patent-status registered">등록</span>
+      <div class="patent-title">연안 침식 관리를 위한 모래 유실 모니터링 및 정보 제공 시스템</div>
+      <div class="patent-tech">Change Detection · Coastal Monitoring · 2022.01</div>
+    </div>
+    <div class="patent-card">
+      <span class="patent-status registered">등록</span>
+      <div class="patent-title">위성 데이터 기반 도서(Island) 자산 정보 분석 및 제공 시스템</div>
+      <div class="patent-tech">Spatial Data Mining · Asset Valuation · 2021.08</div>
+    </div>
+    <div class="patent-card">
+      <span class="patent-status applied">출원</span>
+      <div class="patent-title">Semantic Segmentation 기반 지도 보도(Sidewalk) 자동 갱신 시스템</div>
+      <div class="patent-tech">Deep Learning · GIS Data Processing · 2023.02</div>
+    </div>
+    <div class="patent-card">
+      <span class="patent-status applied">출원</span>
+      <div class="patent-title">위성영상 기반 정밀 농업(Precision Agriculture) 및 재해 탐지 정보 제공</div>
+      <div class="patent-tech">Crop Monitoring · Disaster Detection Model · 2021.01</div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-name">Kim Sehyoung</div>
+  <div class="footer-role">Data Scientist</div>
+  <div class="footer-copy">© 2025 Kim Sehyoung. All rights reserved.</div>
+</footer>
+
+<!-- ========== PORTFOLIO MODAL ========== -->
+<div class="modal-overlay" id="portfolio-modal">
+  <div class="modal-window">
+    <div class="modal-close">
+      <span class="modal-close-label">포트폴리오</span>
+      <button class="modal-close-btn" onclick="closeModal('portfolio-modal')">✕</button>
+    </div>
+    <div class="modal-content">
+      <div class="portfolio-hero">
+        <div class="portfolio-hero-tag">Portfolio · Kim Sehyoung</div>
+        <div class="portfolio-hero-title">연구 및<br>프로젝트 소개</div>
+        <div class="portfolio-hero-subtitle">Data Scientist · 김세형 지원자</div>
+      </div>
+
+      <div class="portfolio-section">
+        <div class="portfolio-section-title">핵심 역량</div>
+        <div class="competency-grid">
+          <div class="competency-card">
+            <div class="competency-num">1</div>
+            <div class="competency-title">문제 정의와 구조화</div>
+            <div class="competency-desc">KCI 10편 이상, SCOPUS 2편, SCI급 1편 게재. '유용한 결과는 명확한 문제 정의에서 시작한다'는 원칙으로 리서치 진행.</div>
+          </div>
+          <div class="competency-card">
+            <div class="competency-num">2</div>
+            <div class="competency-title">논리적인 설계와 기획</div>
+            <div class="competency-desc">국내 특허 5건, 미국 특허 3건 등록. 복잡한 문제일수록 구조적인 설계가 필요함을 현업에서 체득.</div>
+          </div>
+          <div class="competency-card">
+            <div class="competency-num">3</div>
+            <div class="competency-title">다양한 도구 활용 역량</div>
+            <div class="competency-desc">Python, R, SPSS, Tableau, PowerBI, AWS, Azure 등 목적에 따른 다양한 도구 활용 가능. 국내외 자격증으로 체계화.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="portfolio-section">
+        <div class="portfolio-section-title">Ⅱ. 경력 프로젝트</div>
+
+        <div class="work-item">
+          <div class="work-item-header">
+            <span class="work-item-num">01 · 현대엔지비</span>
+          </div>
+          <div class="work-item-title">자동차 산업에서의 Cloud Native 적용 방안</div>
+          <div class="work-item-sub">SDV 전환에 따른 SW 개발 효율화를 위해 SOAFEE 컨소시엄 참가 및 연구원 인터뷰 진행. Kubernetes & Cloud Native 자격증 취득 후 차량 개발 적용 방안 설계.</div>
+          <span class="work-outcome">🏆 MBO Outstanding 등급 · C-Level 긍정 평가</span>
+        </div>
+
+        <div class="work-item">
+          <div class="work-item-header">
+            <span class="work-item-num">02 · 현대엔지비</span>
+          </div>
+          <div class="work-item-title">차량용 Wi-Fi 활용 서비스 시장 리서치 및 기술 전략 수립</div>
+          <div class="work-item-sub">5G 기반 커넥티드카 기술 분석 및 Wi-Fi 6 보완적 역할 연구. 3GPP 발표 자료 분석 후 TRM(Technology RoadMap) 기획.</div>
+          <span class="work-outcome">✅ Wi-Fi 선행기술 개발 연구원 긍정 평가</span>
+        </div>
+
+        <div class="work-item">
+          <div class="work-item-header">
+            <span class="work-item-num">03 · 현대엔지비</span>
+          </div>
+          <div class="work-item-title">승객안전(에어백) 연구개발 로드맵 설계 컨설팅</div>
+          <div class="work-item-sub">PatentSBERT 기반 특허 클러스터링 + 기술 유형별 시계열 분석으로 유망 기술 도출. 현대모비스 에어백설계팀 요청 TRM 컨설팅 진행.</div>
+          <span class="work-outcome">🏆 NPS 상위 등급 · 현대모비스 미래형 에어백 과제 발굴 기여</span>
+        </div>
+
+        <div class="work-item">
+          <div class="work-item-header">
+            <span class="work-item-num">04 · 현대엔지비</span>
+          </div>
+          <div class="work-item-title">중국 및 일본 동향 자동화 프로그램 개발</div>
+          <div class="work-item-sub">sLLM + ChatGPT API 기반 자동 번역 모델 개발. 크롤러 + OCR 통합으로 URL 또는 이미지 첨부만으로 작동. 사내 서버 배포.</div>
+          <span class="work-outcome">📈 동향 리포트 30% 생산성 향상</span>
+        </div>
+
+        <div class="work-item">
+          <div class="work-item-header">
+            <span class="work-item-num">05 · 현대엔지비</span>
+          </div>
+          <div class="work-item-title">산업 데이터 표준화 및 공유 플랫폼 동향 리서치</div>
+          <div class="work-item-sub">Data Space, AAS 기술 문서 분석. 독일 Fraunhofer/T-mobile 연구원 직접 컨택 및 인터뷰 진행. 배터리 규제 기반 도입 전략 제안.</div>
+          <span class="work-outcome">🏆 NPS 상위 등급 · 현대차그룹 제조 부문 전략 활용</span>
+        </div>
+
+        <div class="work-item">
+          <div class="work-item-header">
+            <span class="work-item-num">06 · 현대엔지비</span>
+          </div>
+          <div class="work-item-title">트렌드 데이터 시각화 (Tableau 대시보드)</div>
+          <div class="work-item-sub">자동차 산업 트렌드 데이터를 Tableau로 시각화. 현대차그룹 정보 포털(L!NK)에 배포 후 지속 업데이트 진행.</div>
+          <span class="work-outcome">🏆 MBO Outstanding 등급 · C-Level 긍정 평가</span>
+        </div>
+      </div>
+
+      <div class="portfolio-section">
+        <div class="portfolio-section-title">Ⅲ. 주요 논문</div>
+        <div class="work-item">
+          <div class="work-item-header"><span class="work-item-num">EMNLP 2024</span></div>
+          <div class="work-item-title">An Expert Behavior-enhanced Paper Ranking Framework for the Automotive Industry</div>
+          <div class="work-item-sub">BM25 → V-BERT-Specter → Expert Behavior Modeling(인용수, 키워드 빈도, 기관 평판) → 앙상블 랭킹 프레임워크. 현대엔지비 산학 프로젝트 결과물.</div>
+        </div>
+        <div class="work-item">
+          <div class="work-item-header"><span class="work-item-num">GIQ (심사중)</span></div>
+          <div class="work-item-title">A framework for detecting legal blind spots for socially vulnerable populations</div>
+          <div class="work-item-sub">사회적 약자 온라인 상담 + 판례 데이터에 SBERT 임베딩 적용하여 법률 사각지대 탐지. 법학전문대학원 교수 협업.</div>
+        </div>
+      </div>
+
+      <div class="portfolio-section">
+        <div class="portfolio-section-title">Ⅴ. 공모전 및 기타 프로젝트</div>
+        <div class="work-item">
+          <div class="work-item-header"><span class="work-item-num">신한AI 공모전 2위</span></div>
+          <div class="work-item-title">보다 나은 금융 생활을 위한 AI 서비스 아이디어 경진대회</div>
+          <div class="work-item-sub">Vector DB 기반 QA 챗봇 + 재무제표 해석 + 해외 뉴스 기사 분석 및 주가 예측 기능 통합. RAG + Streamlit UI 개발.</div>
+        </div>
+        <div class="work-item">
+          <div class="work-item-header"><span class="work-item-num">유라코퍼레이션 DX 프로젝트</span></div>
+          <div class="work-item-title">제조 공정 불량품 예측 모델 개발</div>
+          <div class="work-item-sub">피처 엔지니어링 기반 불량품 패턴 발견. 시각화 대시보드 및 예측 모델 구축.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== RESUME MODAL ========== -->
+<div class="modal-overlay" id="resume-modal">
+  <div class="modal-window">
+    <div class="modal-close">
+      <span class="modal-close-label">이력서</span>
+      <button class="modal-close-btn" onclick="closeModal('resume-modal')">✕</button>
+    </div>
+    <div class="modal-content">
+      <div style="margin-bottom:40px;">
+        <div style="font-family:'DM Serif Display',serif;font-size:36px;margin-bottom:4px;">김세형</div>
+        <div style="font-size:13px;letter-spacing:0.15em;color:var(--accent-dark);font-weight:600;text-transform:uppercase;margin-bottom:16px;">Data Scientist</div>
+        <div style="font-size:13px;color:var(--muted);line-height:1.8;">
+          문제를 구조화하고 데이터로 증명하며 기술로 실현하는 Data Scientist.<br>
+          석사 과정에서 11편 이상의 논문 게재, 7건의 특허 보유, 9개 전문 자격증 취득.
+        </div>
+      </div>
+
+      <div class="resume-section">
+        <div class="resume-section-title">경력</div>
+
+        <div class="resume-job">
+          <div class="resume-job-header">
+            <div class="resume-job-company">CJ제일제당 (CJ CheilJedang)</div>
+            <div class="resume-job-period">2025.07 ~ 재직 중</div>
+          </div>
+          <div class="resume-job-role">Data Scientist · BIO기술마케팅팀</div>
+
+          <div class="resume-project">
+            <div class="resume-project-title">[P1] 수리적 최적화(LP) 기반 아미노산 배합비 최적화 모델 개발</div>
+            <ul class="resume-bullets">
+              <li>Role: 모델링 및 알고리즘 개발 (기여도 100%)</li>
+              <li>국제 곡물가 변동 및 영양소 요구량 제약 조건 반영한 선형계획법(LP) 기반 비용 최소화 모델 개발</li>
+              <li>Python(Gurobi, SciPy) 활용 최적화 엔진 구현 및 현업용 시뮬레이션 툴 제공</li>
+            </ul>
+          </div>
+
+          <div class="resume-project">
+            <div class="resume-project-title">[P2] 통계적 실험 설계(DOE) 및 사양 데이터 검증 프로세스 구축</div>
+            <ul class="resume-bullets">
+              <li>동물 사양 실험 결과 T-test, ANOVA 기반 통계적 가설 검증 및 유의성 평가</li>
+              <li>데이터 전처리 파이프라인 구축 및 이상치(Outlier) 탐지 로직 적용</li>
+            </ul>
+          </div>
+
+          <div class="resume-project">
+            <div class="resume-project-title">[P4] 시계열 예측 모델 기반 원료 판가 예측 시스템 개발</div>
+            <ul class="resume-bullets">
+              <li>Role: 모델링 및 알고리즘 고도화 (기여도 100%)</li>
+              <li>XGBoost, LightGBM, Prophet/LSTM 앙상블 기법으로 예측 정확도(MAPE) 극대화</li>
+              <li>구매 시점 최적화 및 리스크 관리 전략 제안하는 시각화 대시보드 구현</li>
+            </ul>
+          </div>
+
+          <div class="resume-project">
+            <div class="resume-project-title">[P5] Tech DB 기반 AI 지식 관리 파이프라인 및 어시스턴트 구축</div>
+            <ul class="resume-bullets">
+              <li>RAG 기반 사내 R&D 기술 자료 검색 시스템 구축 (벡터 DB + 임베딩)</li>
+              <li>비정형 문서 전처리부터 LLM 연동, 응답 생성, 가드레일 설정까지 AI 워크플로우 설계</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="resume-job">
+          <div class="resume-job-header">
+            <div class="resume-job-company">현대엔지비 (Hyundai NGV)</div>
+            <div class="resume-job-period">2024.03 ~ 2025.05</div>
+          </div>
+          <div class="resume-job-role">Data Scientist · 기술기획팀</div>
+
+          <div class="resume-project">
+            <div class="resume-project-title">[P1] 생성형 AI(sLLM) 기반 사내 R&D 지원 서비스 개발</div>
+            <ul class="resume-bullets">
+              <li>LangChain + On-premise sLLM 기반 RAG 질의응답 에이전트 개발</li>
+              <li>기술 문헌 요약 및 리포트 초안 생성 기능 구현</li>
+            </ul>
+          </div>
+
+          <div class="resume-project">
+            <div class="resume-project-title">[P2] 텍스트 마이닝 기반 미래 기술 로드맵(TRM) 수립</div>
+            <ul class="resume-bullets">
+              <li>수만 건 모빌리티 특허/논문 데이터 BERTopic, KeyBERT 분석</li>
+              <li>기술 키워드 네트워크 분석(SNA)으로 공백 기술 및 부상 기술 도출</li>
+              <li>현대차그룹 중장기 R&D 기술 로드맵(TRM) 수립 지원</li>
+            </ul>
+          </div>
+
+          <div class="resume-project">
+            <div class="resume-project-title">[P3] R&D 기술 트렌드 시각화 대시보드 구축 → MBO Outstanding</div>
+            <ul class="resume-bullets">
+              <li>Tableau 기반 전사 대시보드 개발 및 그룹사 포털(L!NK) 배포</li>
+              <li>KPI 지표 시각화 및 Drill-down 기능 구현</li>
+            </ul>
+          </div>
+
+          <div class="resume-project">
+            <div class="resume-project-title">[P4] 데이터 분석 기반 R&D 전략 기획 (SDV Cloud Native / 데이터 표준화 / 에어백 TRM)</div>
+            <ul class="resume-bullets">
+              <li>SOAFEE 컨소시엄 참가 후 SDV 전환 Cloud Native 적용 방안 연구 → MBO Outstanding</li>
+              <li>독일 Fraunhofer/T-mobile 연구원 직접 인터뷰 → 데이터 공유 플랫폼 도입 전략 → NPS 상위</li>
+              <li>PatentSBERT 클러스터링 + 시계열 분석으로 에어백 유망 기술 도출 → NPS 상위, 현대모비스 과제 기여</li>
+            </ul>
+          </div>
+
+          <div class="resume-project">
+            <div class="resume-project-title">[P5] 빅데이터 분석 기반 리포트 작성 (글로벌 Top 100 대학 연구 트렌드)</div>
+            <ul class="resume-bullets">
+              <li>Scopus·SciVal 기반 QS 상위 100개 대학 논문 데이터 수집</li>
+              <li>대학-기업 간 2-mode SNA로 현대차그룹 산학 협업 현황 비교 분석</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="resume-job">
+          <div class="resume-job-header">
+            <div class="resume-job-company">SK가스 (SK Gas)</div>
+            <div class="resume-job-period">2023.10 ~ 2023.11</div>
+          </div>
+          <div class="resume-job-role">Data Analyst (Intern) · 마케팅전략팀</div>
+          <div class="resume-project">
+            <div class="resume-project-title">[P1] 멤버십 데이터 기반 LPG 고객 세분화 및 마케팅 전략 수립</div>
+            <ul class="resume-bullets">
+              <li>LPG 1톤 트럭 고객 멤버십 충전 데이터 활용 RFM 분석 및 K-Means Clustering</li>
+              <li>군집별 행동 패턴 정의 및 타겟 맞춤형 프로모션 전략 제안</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="resume-section">
+        <div class="resume-section-title">자격증</div>
+        <div class="cert-grid-modal">
+          <div class="cert-row">
+            <div class="cert-row-name">빅데이터분석기사</div>
+            <div class="cert-row-meta">한국데이터산업진흥원 · 2023.12</div>
+          </div>
+          <div class="cert-row">
+            <div class="cert-row-name">AWS Certified ML Engineer: Associate</div>
+            <div class="cert-row-meta">Amazon · 2025.02</div>
+          </div>
+          <div class="cert-row">
+            <div class="cert-row-name">AWS Certified AI Practitioner</div>
+            <div class="cert-row-meta">Amazon · 2025.01</div>
+          </div>
+          <div class="cert-row">
+            <div class="cert-row-name">Kubernetes and Cloud Native Associate</div>
+            <div class="cert-row-meta">Linux Foundation · 2025.01</div>
+          </div>
+          <div class="cert-row">
+            <div class="cert-row-name">Microsoft Azure Fundamentals</div>
+            <div class="cert-row-meta">Microsoft · 2025.01</div>
+          </div>
+          <div class="cert-row">
+            <div class="cert-row-name">Tableau Desktop Specialist</div>
+            <div class="cert-row-meta">Tableau · 2024.02</div>
+          </div>
+          <div class="cert-row">
+            <div class="cert-row-name">AWS Certified Cloud Practitioner</div>
+            <div class="cert-row-meta">Amazon · 2023.07</div>
+          </div>
+          <div class="cert-row">
+            <div class="cert-row-name">SQLD</div>
+            <div class="cert-row-meta">한국데이터산업진흥원 · 2022.09</div>
+          </div>
+          <div class="cert-row">
+            <div class="cert-row-name">ADsP</div>
+            <div class="cert-row-meta">한국데이터산업진흥원 · 2019.12</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="resume-section">
+        <div class="resume-section-title">주요 수상</div>
+        <ul class="resume-bullets" style="background:var(--cream);padding:20px 20px 20px 32px;">
+          <li>2023.06 | 2위 (신한AI 아이디어 경진대회) - LLM 기반 금융 분석 챗봇</li>
+          <li>2023.08 | 한국광해광업공단상 (산업통상자원부 공공데이터 BI 공모전)</li>
+          <li>2022.12 | 우수상 (경동도시가스 빅데이터 해커톤)</li>
+          <li>2022.11 | 최우수상 (SR 서비스 혁신 경진대회)</li>
+          <li>2023.07 | 우수상 (한국도로공사 논문 공모전)</li>
+          <li>2022~2023 | 우수논문상 3회 (한국전자거래학회)</li>
+          <li>2022.02 | 우수발표논문상 (한국스마트미디어학회)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function openModal(id) {
+    document.getElementById(id).classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal(id) {
+    document.getElementById(id).classList.remove('active');
+    document.body.style.overflow = '';
+  }
+
+  // Close on overlay click
+  document.querySelectorAll('.modal-overlay').forEach(overlay => {
+    overlay.addEventListener('click', function(e) {
+      if (e.target === this) closeModal(this.id);
+    });
+  });
+
+  // Close on ESC
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      document.querySelectorAll('.modal-overlay.active').forEach(m => closeModal(m.id));
+    }
+  });
+
+  // Intersection Observer for reveal animations
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 60);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
